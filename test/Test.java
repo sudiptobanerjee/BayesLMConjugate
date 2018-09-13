@@ -15,20 +15,24 @@ public final class Test {
         //
         int matrix_layout = Matrix.LAYOUT.RowMajor;
         final int nrow = 1342;
-        final int ncol = 7;
-        Matrix Data = new Matrix(nrow, ncol);
-        String filename = "../data/FORMGMT.dat.tab";
-        File file = new File(filename); 
-        fileinput fi = new fileinput();
-        fi.readmatrix(file, Data);
+        final int ncol = 8;
+        final int xncol = 7;
+        Matrix X = new Matrix(nrow, xncol);
+        String xfilename = "../data/X.txt";
+        File xfile = new File(xfilename); 
+        fileinput xfi = new fileinput();
+        xfi.readmatrix(xfile, X);
+        Matrix Y = new Matrix(nrow, 1);
+        String yfilename = "../data/Y.txt";
+        File yfile = new File(yfilename); 
+        fileinput yfi = new fileinput();
+        yfi.readmatrix(yfile, Y);
         //
         // Prepare the matrices and other parameters
         //
-        double a = 2, b = 2;
-        final int nsam = 5000;
-        Matrix Y = Data.getMatrix(0,(nrow-1),0,0);
-        Matrix X = Data.getMatrix(0,(nrow-1),1,6);
         int p = X.getColumnDimension();
+        double a = -p/2, b = 0;
+        final int nsam = 500;
         Matrix mub = new Matrix(p,1);//μβ, p*1
         Matrix Vbinv = new Matrix(p,p);//p*p
         double[][] result;
@@ -38,7 +42,7 @@ public final class Test {
         BayesLMC Bayes = new BayesLMC(nsam, Y, X, mub, Vbinv, a, b);
         result = Bayes.getResult();
         Matrix Result = new Matrix(result);
-        printMatrix("Beta and sigma square is = ", matrix_layout, Result.getArray(), Result.getRowDimension(), Result.getColumnDimension());
+        printMatrix(matrix_layout, Result.getArray(), Result.getRowDimension(), Result.getColumnDimension());
     }
 
     //
@@ -61,6 +65,23 @@ public final class Test {
     		}
     	}
     	else{System.out.println("** Illegal layout setting");}
+    }
+    private static void printMatrix(int layout, double[][] X, int I, int J) {
+        if (layout == Matrix.LAYOUT.ColMajor) {
+            for (int i=0; i<I; i++) {
+                for (int j=0; j<J; j++)
+                    System.out.print("\t" + string(X[j][i]));
+                System.out.println();
+            }
+        }
+        else if (layout == Matrix.LAYOUT.RowMajor){
+            for (int i=0; i<I; i++) {
+                for (int j=0; j<J; j++)
+                    System.out.print("\t" + string(X[i][j]));
+                System.out.println();
+            }
+        }
+        else{System.out.println("** Illegal layout setting");}
     }
     //
     /* Print the array X */

@@ -20,3 +20,4 @@ clean:
 	rm -f $(JAVA_HOME)/test/*.txt
 	rm -f $(JAVA_HOME)/test/*.out
 	rm -f $(JAVA_HOME)/test/*.serial
+	rm -f $(JAVA_HOME)/data/*.txt
