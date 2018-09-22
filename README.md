@@ -6,8 +6,6 @@ Build Instructions
 ------------------
 
 * Before compiling, you may have to go into the Makefile of both JAMAJniLite and java_Rmath to change the extension of generated libraries based on your operating system. On OS X you have to change all the extensions of dynamic library to .dylib while on Linux the corresponding extensions are .so
-There is one example, if you use OS X, you need to change "DYLIB_LAPACK1 = $(JAVA_HOME)/lib/liblapack_LUDecomposition.so" to "DYLIB_LAPACK1 = $(JAVA_HOME)/lib/liblapack_LUDecomposition.dylib" in JAMAJniLite/src/Makefile line 21. You have to change all the .so to .dylib
-If you use Linux, just keep the .so and change all .dylib into .so
 
 * To compile the package, enter src directory and execute "make".
 This will first build the necessary libraries and packages for JAMAJniLite and java_Rmath and then build BayesLMConjugate. You don't have to do extra things for building subpackages.
