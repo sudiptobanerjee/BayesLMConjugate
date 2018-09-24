@@ -6,18 +6,22 @@ JC = javac
 JFLAGS = -d
 JAVA_SRC = $(SRC)/BayesLMC.java $(SRC)/fileinput.java
 PACKAGE = $(JAVA_HOME)/class/BayesLMConjugate
-JAMA_RMATH_CLASS_PATH = $(JAVA_HOME)/class
+SUBPACKAGES_CLASS_PATH = $(JAVA_HOME)/class
 
-all: $(PACKAGE)
+all: subpackage1 subpackage2 $(PACKAGE)
 
-$(PACKAGE): $(JAVA_SRC)
+subpackage1:
 	@mkdir -p $(@D)
-	$(JC) $(JFLAGS) $(JAVA_HOME)/class -classpath $(JAMA_RMATH_CLASS_PATH):. $(JAVA_SRC)
+	$(MAKE) -C ../JAMAJniLite/src
+
+subpackage2:
+	@mkdir -p $(@D)
+	$(MAKE) -C ../java_Rmath/
+
+$(PACKAGE): subpackage1 subpackage2 $(JAVA_SRC)
+	@mkdir -p $(@D)
+	$(JC) $(JFLAGS) $(JAVA_HOME)/class -classpath $(SUBPACKAGES_CLASS_PATH):. $(JAVA_SRC)
 
 clean: 
-	rm -fr $(JAVA_HOME)/class/BayesLMConjugate
-	rm -f $(JAVA_HOME)/test/*.class
-	rm -f $(JAVA_HOME)/test/*.txt
-	rm -f $(JAVA_HOME)/test/*.out
-	rm -f $(JAVA_HOME)/test/*.serial
-	rm -f $(JAVA_HOME)/data/*.txt
+	rm -fr $(JAVA_HOME)/class
+	rm -fr $(JAVA_HOME)/lib
